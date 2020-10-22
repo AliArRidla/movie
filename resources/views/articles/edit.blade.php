@@ -13,9 +13,17 @@
             </div>
             <div class="form-group">
                 <label for="body">Body</label>
-                <textarea class="form-control" name="body" id="body" rows="6">{{$article -> body}}</textarea>
+                <textarea class="form-control" class="form-control" name="body" id="body" rows="6">{{$article -> body}}</textarea>
             </div>
-            <button type="submit" class="btn btn-success btn-lg btn-block">Create</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block">Update</button>
         </form>
+        <script>
+        var body = document.getElementById("body");
+            CKEDITOR.replace(body,{
+            language:'en-gb'
+        });
+        CKEDITOR.config.allowedContent = true;
+    </script>
     </div>
+     
 @endsection

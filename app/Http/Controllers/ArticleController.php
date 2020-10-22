@@ -46,7 +46,8 @@ class ArticleController extends Controller
         $article->author = $request->author;
         $article->save();
         return redirect()->route('article')
-            ->with('success', 'Article created successfully.'); //Redirect ke halaman books/index.blade.php dengan pesan success
+            ->with('success', 'Article created successfully.');
+        //Redirect ke halaman books/index.blade.php dengan pesan success
     }
 
     /**
