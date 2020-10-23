@@ -26,7 +26,7 @@ Route::get('/articles/{article}', 'ArticleController@show')->name('detail');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/create', 'ArticleController@create')->name('create');
     Route::post('/store', 'ArticleController@store')->name('store');
-    Route::post('/update', 'ArticleController@update')->name('update');
+    Route::put('/update/{article}', 'ArticleController@update')->name('update');
     Route::get('/articles/{article}/edit', 'ArticleController@edit')->name('edit');
     Route::get('/articles/delete/{article}', 'ArticleController@destroy')->name('delete');
 });

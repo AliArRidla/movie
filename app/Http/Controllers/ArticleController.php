@@ -82,14 +82,16 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         //
-        $article = new Article();
-        // $article = Article::findOrFail($article->id);
+        // $article = new Article();
+        $article = Article::findOrFail($article->id);
         $article->title = $request->title;
         $article->body = $request->body;
         $article->author = $request->author;
-        $article->save();
+        $article->update();
         return redirect()->route('article')
             ->with('success', 'Article updated successfully.'); //Redirect ke halaman books/index.blade.php dengan pesan success
+
+
     }
 
     /**
