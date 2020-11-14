@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class ArticleController extends Controller
 {
@@ -15,6 +17,15 @@ class ArticleController extends Controller
             if (Gate::allows('isUser')) return $next($request);
             abort(403, 'Anda tidak memiliki cukup hak akses');
         });
+    }
+
+    public function cetak(Article $article)
+    {
+        $articles = Article::findOrFail($article->id);
+        $pdf = PDF::loadview('articles.articlesPDF', compact('articles'));
+        // return $pdf->stream();
+        return $pdf->download('laporan-pegawai-pdf');
+        // return view('articles.articlesPDF', compact('articles'));
     }
     /**
      * Display a listing of the resource.
@@ -34,6 +45,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
+
         $articles = Article::all();
         return view('articles.create', compact('articles'));
     }
@@ -47,12 +59,18 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         // Validate the request...
-
+        if ($request->file('file')) {
+            $files = $request->file('file')->store('img/article', 'public');
+        }
+        $request->validate([
+            'file' => 'required|mimes:png,jpg,jpeg|max:2048'
+        ]);
         $article = new Article();
 
         $article->title = $request->title;
-        $article->body = $request->body;
         $article->author = $request->author;
+        $article->body = $request->body;
+        $article->image = $files;
         $article->save();
         return redirect()->route('article')
             ->with('success', 'Article created successfully.');
@@ -96,12 +114,32 @@ class ArticleController extends Controller
         $article->title = $request->title;
         $article->body = $request->body;
         $article->author = $request->author;
+        // if (
+        //     $article->image && file_exists(storage_path('app/public/' . $article->image))
+        // ) {
+        //     Storage::delete('public/' . $article->image);
+        //     $image_name = $request->file('gambar')->store('img/article', 'public');
+        //     $article->image = $image_name;
+        // }
+
+        // if ($request->hasFile('file')) {
+        //     $file = $request->file('image');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = time() . '.' . $extension;
+        //     $file->move('img/article', $filename);
+        //     $article->image = $filename;
+        // }
+
+        if ($request->image) {
+            Storage::delete('public/' . $article->image);
+        }
         $article->update();
         return redirect()->route('article')
             ->with('success', 'Article updated successfully.'); //Redirect ke halaman books/index.blade.php dengan pesan success
 
 
     }
+
 
     /**
      * Remove the specified resource from storage.

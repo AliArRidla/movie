@@ -12,11 +12,11 @@
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           {{-- <li><a href="#portfolio">Portfolio</a></li> --}}
-            <li class="nav-item {{ Route::is('post.index') ? 'active' : '' }}">
+            {{-- <li class="nav-item {{ Route::is('post.index') ? 'active' : '' }}">
               @can('isUser')
                     <a href="posts">Post</a>
                 @endcan              
-            </li>
+            </li> --}}
             <li class="nav-item {{ Route::is('article') ? 'active' : '' }}">
                 @can('isUser')
                     <a href="articles">Article</a>

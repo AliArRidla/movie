@@ -51,12 +51,12 @@
   <script src="js/app.js"></script>
   <script src="{{asset('js/ckeditor/ckeditor.js')}}"></script>
   <script src="//cdn.ckeditor.com/4.15.0/full/ckeditor.js"></script>
-   <script>
+   {{-- <script>
         var body = document.getElementById("body");
             CKEDITOR.replace(body,{
             language:'en-gb'
         });
         CKEDITOR.config.allowedContent = true;
-    </script>
+    </script> --}}
 </body>
 </html>

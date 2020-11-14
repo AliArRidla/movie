@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -38,11 +38,11 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function redirectTo()
-    {
-        $for = [
-            'Administrator' => 'home', 'User' => 'post.index',
-        ];
-        return $this->redirectTo = route($for[auth()->user()->roles]);
-    }
+    // public function redirectTo()
+    // {
+    //     $for = [
+    //         'Administrator' => 'home', 'User' => 'home',
+    //     ];
+    //     return $this->redirectTo = route($for[auth()->user()->roles]);
+    // }
 }
