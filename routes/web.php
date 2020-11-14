@@ -40,6 +40,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
-// // learn API
-// Route::get('/news', 'NewsController@displayNews')->name('news');
-// Route::post('/sourceId', 'NewsController@displayNews')->name('news');
+// learn API
+Route::get('/news', 'NewsController@displayNews')->name('news');
+Route::post('/sourceId', 'NewsController@displayNews')->name('news');
