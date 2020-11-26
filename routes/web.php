@@ -1,6 +1,9 @@
 <?php
 
 use App\Post;
+// use Illuminate\Routing\Route;
+
+// use Illuminate\Routing\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +41,18 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('/articles/cetakPDF', 'ArticleController@cetakPDF')->name('cetakPDF');
 });
 
+Route::group(['middleware' => ['roles:admin']], function () {
+    Route::get('/dashboard', 'AdminController@index')->name("dashboard");
+    Route::get('/user/admin', 'AdminController@admin')->name("admin");
+    Route::get('/user/biasa', 'AdminController@biasa')->name("biasa");
+    Route::get('/create', 'AdminController@create')->name("tambah");
+    Route::post('/storeAdmin', 'AdminController@store')->name("tambahStore");
+    Route::get('/article', 'AdminController@article')->name('allArticle');
+});
+
+Route::get('/profile/{user}', 'UserController@index')->name("detailUser");
+
+// Route::get('/newsBaru', 'NewsControllerBaru@getData');
 
 
 // learn API

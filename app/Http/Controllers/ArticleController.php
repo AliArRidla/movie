@@ -23,26 +23,18 @@ class ArticleController extends Controller
     {
         $articles = Article::findOrFail($article->id);
         $pdf = PDF::loadview('articles.articlesPDF', compact('articles'));
-        // return $pdf->stream();
-        return $pdf->download('laporan-pegawai-pdf');
+        return $pdf->stream();
+        // return $pdf->download('laporan-pegawai-pdf');
         // return view('articles.articlesPDF', compact('articles'));
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $articles = Article::all();
         return view('articles.home', compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
 
@@ -50,12 +42,6 @@ class ArticleController extends Controller
         return view('articles.create', compact('articles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // Validate the request...
@@ -77,76 +63,36 @@ class ArticleController extends Controller
         //Redirect ke halaman books/index.blade.php dengan pesan success
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
     public function show(Article $article)
     {
         return view('articles.detail', compact('article'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Article $article)
     {
         return view('articles.edit', compact('article'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Article $article)
     {
-        //
-        // $article = new Article();
-        $article = Article::findOrFail($article->id);
+        $article = Article::find($article->id);
         $article->title = $request->title;
         $article->body = $request->body;
         $article->author = $request->author;
-        // if (
-        //     $article->image && file_exists(storage_path('app/public/' . $article->image))
-        // ) {
-        //     Storage::delete('public/' . $article->image);
-        //     $image_name = $request->file('gambar')->store('img/article', 'public');
-        //     $article->image = $image_name;
-        // }
 
-        // if ($request->hasFile('file')) {
-        //     $file = $request->file('image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $filename = time() . '.' . $extension;
-        //     $file->move('img/article', $filename);
-        //     $article->image = $filename;
-        // }
-
-        if ($request->image) {
+        if (
+            $article->image && file_exists(storage_path('app/public/' . $article->image))
+        ) {
             Storage::delete('public/' . $article->image);
         }
-        $article->update();
-        return redirect()->route('article')
-            ->with('success', 'Article updated successfully.'); //Redirect ke halaman books/index.blade.php dengan pesan success
+        $nama_image = $request->file('image')->store('images', 'public');
+        $article->image = $nama_image;
 
-
+        $article->save();
+        return redirect()->route('article');
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Article $article)
     {
         $article = Article::findOrFail($article->id);

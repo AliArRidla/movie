@@ -33,17 +33,19 @@
                 @endif
             @else
                 <li class="drop-down">
-                    <a href="#">{{ Auth::user()->name }} <span class="caret"></span></a>
+                    <img src="{{asset('img/favicon.png')}}" alt="" srcset="">
+                    {{-- <a href="#">{{ Auth::user()->name }} <span class="caret"></span></a> --}}
                 <ul>
-                    <li>
+                    <li><a href="/profile/{{Auth::user()->id}}">Profile</a></li>
+                    <li>                        
                          <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
-                        </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
+                        </a>                                                
                     </li>
                 </ul>                    
                 </li>
